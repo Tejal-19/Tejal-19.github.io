@@ -80,8 +80,10 @@ export function initPlanningDemo(root: HTMLElement) {
 
   function applyMode(cell: Cell) {
     if (mode === 'start') {
+      grid[cell.row][cell.col] = true; // never let start land inside a wall
       start = cell;
     } else if (mode === 'goal') {
+      grid[cell.row][cell.col] = true; // never let goal land inside a wall
       goal = cell;
     } else if (mode === 'wall') {
       if (!isStartOrGoal(cell)) grid[cell.row][cell.col] = false;

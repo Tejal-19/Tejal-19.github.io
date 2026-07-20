@@ -1,6 +1,8 @@
+import type { IconName } from '../components/Icon.astro';
+
 export interface SkillCategory {
   title: string;
-  icon: string; // Font Awesome-free — see SkillsGrid.astro for inline icon mapping
+  icon: IconName;
   items: string[];
 }
 

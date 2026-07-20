@@ -1,6 +1,6 @@
 # Tejal Bedmutha — Personal Site
 
-Robotics-researcher portfolio: about, experience, projects, publications,
+Robotics researcher portfolio: about, experience, projects, publications,
 skills, education, and an interactive A* path-planning demo. Built with
 [Astro](https://astro.build) as a fully static site.
 

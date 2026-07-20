@@ -1,5 +1,9 @@
 {
- "name": "App",
+ "name": "Tejal Bedmutha",
+ "short_name": "Tejal Bedmutha",
+ "start_url": "/",
+ "theme_color": "#0b0d10",
+ "background_color": "#0b0d10",
  "icons": [
   {
    "src": "\/android-icon-36x36.png",

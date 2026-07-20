@@ -2,8 +2,10 @@
 // Hand-rolled inline SVGs instead of an icon-font CDN (Font Awesome, etc.):
 // no extra network request, no unused-glyph bloat, and the thin, geometric
 // stroke style matches the schematic look better than a general-purpose set.
+export type IconName = 'linkedin' | 'github' | 'mail' | 'phone' | 'external' | 'code' | 'robot' | 'tools' | 'brain';
+
 interface Props {
-  name: 'linkedin' | 'github' | 'mail' | 'phone' | 'external' | 'code' | 'robot' | 'tools' | 'brain';
+  name: IconName;
   class?: string;
 }
 

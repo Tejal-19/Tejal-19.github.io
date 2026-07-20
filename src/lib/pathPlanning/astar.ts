@@ -52,6 +52,12 @@ function neighbors(cell: Cell, grid: Grid): Array<{ cell: Cell; cost: number }> 
     const col = cell.col + dc;
     if (row < 0 || row >= rows || col < 0 || col >= cols) continue;
     if (!grid[row][col]) continue; // obstacle
+
+    // A diagonal move is only valid if both cells forming that corner are
+    // walkable too — otherwise the path visually cuts through a wall corner.
+    const isDiagonal = dr !== 0 && dc !== 0;
+    if (isDiagonal && (!grid[cell.row][col] || !grid[row][cell.col])) continue;
+
     out.push({ cell: { row, col }, cost });
   }
   return out;

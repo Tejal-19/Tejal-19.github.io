@@ -162,14 +162,38 @@ section[id] {
   text-transform: uppercase;
 }
 
-/* ---- Scroll reveal (progressive enhancement; see src/lib/reveal.ts) ---- */
+/*
+  Scroll-driven entrance (see src/lib/scrollFrames.ts): --p is a continuous
+  0→1 value recomputed on every scroll frame, not a one-time toggle — the
+  element's opacity/scale/position track the scrollbar directly rather than
+  playing a fixed transition once triggered.
+*/
 .reveal {
-  opacity: 0;
-  transform: translateY(14px);
-  transition: opacity 0.6s var(--ease), transform 0.6s var(--ease);
+  --p: 0;
+  opacity: var(--p);
+  transform: translateY(calc((1 - var(--p)) * 32px)) scale(calc(0.96 + var(--p) * 0.04));
+  will-change: transform, opacity;
 }
 
-.reveal.is-visible {
-  opacity: 1;
-  transform: none;
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/*
+  Continuous parallax offset (see src/lib/scrollFrames.ts): --py is a pixel
+  offset recomputed from the element's distance to the viewport center, so
+  it drifts opposite/along the scroll direction for a sense of depth.
+*/
+[data-parallax] {
+  transform: translateY(var(--py, 0px));
+  will-change: transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-parallax] {
+    transform: none;
+  }
 }

@@ -1,0 +1,67 @@
+---
+import Icon from './Icon.astro';
+import { skillCategories } from '../data/skills';
+---
+
+<section class="section" id="skills">
+  <div class="container">
+    <h2 class="section-title">Skills</h2>
+
+    <div class="skills-grid">
+      {skillCategories.map((cat) => (
+        <div class="skill-card reveal">
+          <h3 class="skill-cat-title">
+            <Icon name={cat.icon as any} />
+            {cat.title}
+          </h3>
+          <ul class="skill-items">
+            {cat.items.map((item) => <li>{item}</li>)}
+          </ul>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .skills-grid {
+    display: grid;
+    gap: var(--space-4);
+  }
+
+  .skill-card {
+    background: var(--color-bg-inset);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: var(--space-6);
+  }
+
+  .skill-cat-title {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-size: var(--text-base);
+    color: var(--color-accent);
+    margin-bottom: var(--space-4);
+  }
+
+  .skill-items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    list-style: none;
+  }
+
+  .skill-items li {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-text-dim);
+    padding: var(--space-1) var(--space-3);
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
+  }
+
+  @media (min-width: 720px) {
+    .skills-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>

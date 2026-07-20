@@ -1,72 +1,49 @@
-# Personal Portfolio ⚡️ 
-> A clean, beautiful, responsive portfolio template for Software Developers!
+# Tejal Bedmutha — Personal Site
 
-> https://Tejal-19.github.io
+Robotics-researcher portfolio: about, experience, projects, publications,
+skills, education, and an interactive A* path-planning demo. Built with
+[Astro](https://astro.build) as a fully static site.
 
-![GitHub stars](https://img.shields.io/github/stars/varadbhogayata/varadbhogayata.github.io) 
-![GitHub forks](https://img.shields.io/github/forks/varadbhogayata/varadbhogayata.github.io)
-[![Maintenance](https://img.shields.io/badge/maintained-yes-green.svg)](https://github.com/varadbhogayata/varadbhogayata.github.io/commits/master)
-[![Website shields.io](https://img.shields.io/badge/website-up-yellow)](http://varadbhogayata.github.io/)
-[![Ask Me Anything !](https://img.shields.io/badge/ask%20me-linkedin-1abc9c.svg)](https://www.linkedin.com/in/varadbhogayata/)
-[![License](http://img.shields.io/:license-mit-blue.svg?style=flat-square)](http://badges.mit-license.org)
+## Structure
 
-### Website Preview
-<p align="center"> 
-  <kbd>
-    <a href="https://varadbhogayata.github.io" target="_blank"><img src="examples/preview.gif">
-  </a>
-  </kbd>
-</p>
+```
+src/
+  content/
+    projects/       — one Markdown file per project (frontmatter + write-up)
+    publications/    — one Markdown file per publication (frontmatter + abstract)
+  content.config.ts  — typed schemas for the collections above
+  data/              — plain arrays for experience/skills/education (no detail pages needed)
+  components/        — Nav, Hero, Timeline, SkillsGrid, ProjectCard, PublicationCard, ...
+  lib/pathPlanning/  — the A* algorithm + canvas demo behind the "Lab" section
+  pages/             — routes: /, /projects, /projects/[slug], /publications
+public/              — served as-is: favicons, resume PDFs, project images
+```
 
-:star: Star me on GitHub — it helps!
+## Adding content
 
-## Features 📋
-⚡️ Fully Responsive\
-⚡️ Valid HTML5 & CSS3\
-⚡️ Typing animation using `Typed.js`\
-⚡️ Easy to modify
+- **New project**: add a `.md` file to `src/content/projects/` with the
+  frontmatter fields defined in `src/content.config.ts`, plus a write-up in
+  the body. It'll automatically appear on `/projects` and get its own
+  `/projects/<filename>` page.
+- **New publication**: same idea, in `src/content/publications/`.
+- **Experience / skills / education**: edit the arrays in `src/data/`.
 
-## Installation & Deployment 📦
-- Clone the repository and modify the content of <b>index.html</b> according to your requirement.
-- Add or remove images from `varadbhogayata.github.io/assets/img/` directory as per your requirement.
-- I highly recommend to use [Github Pages](https://create-react-app.dev/docs/deployment/#github-pages) to deploy the website the EASIEST WAY.
-- To deploy your website, first you need to create github repository with name `<your-github-username>.github.io`. Please don't give any other name.
-- Push the generated code to the `master` branch of this repository.
-- <b>NOTE:</b> Make sure to set `analyticsId` from your Google Analytics account inside the Google Analytics script tag, if you want to use your own Google Analytics account.
+## Development
 
-## Sections 📚
-✔️ About me\
-✔️ Experience\
-✔️ Projects \
-✔️ Skills \
-✔️ Education\
-✔️ Contact Info\
-✔️ Resume
+```bash
+npm install
+npm run dev       # http://localhost:4321
+npm run build     # outputs to dist/
+npm run preview   # serve the production build locally
+```
 
-To view a live example, **[click here](https://Tejal-19.github.io/)**
+## Deployment
 
-## Tools Used 🛠️
-* [<b>GitHub Pages</b>](https://create-react-app.dev/docs/deployment/#github-pages) - To host my static website (HTML, CSS, JS).
-* [<b>Materialize</b>](https://materializecss.com/) - A CSS framework to get Google's Material Design components.
-* [<b>Typed.js</b>](https://mattboldt.com/demos/typed-js/) - JavaScript Library
+Pushing to `master` triggers `.github/workflows/deploy.yml`, which builds
+the site and publishes it via GitHub Pages (Actions-based deployment, not
+branch-based) — see the repo's Settings → Pages, source must be set to
+"GitHub Actions".
 
-## Contributing 💡
-#### Step 1
+## License
 
-- **Option 1**
-    - 🍴 Fork this repo!
-
-- **Option 2**
-    - 👯 Clone this repo to your local machine.
-
-
-#### Step 2
-
-- **Build your code** 🔨🔨🔨
-
-#### Step 3
-
-- 🔃 Create a new pull request.
-
-## License 📄
-This project is licensed under the MIT License - see the [LICENSE.md](./LICENSE) file for details.
+MIT — see [LICENSE](./LICENSE).

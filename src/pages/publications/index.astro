@@ -1,0 +1,35 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import PublicationCard from '../../components/PublicationCard.astro';
+
+const publications = (await getCollection('publications')).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+);
+---
+
+<Layout title="Publications" description="Papers and technical reports on motion planning, control, and perception for unmanned vehicles.">
+  <main class="section">
+    <div class="container narrow">
+      <p class="annotate">// publications</p>
+      <h1 class="page-title">Publications</h1>
+      <div class="pub-list">
+        {publications.map((pub) => <PublicationCard publication={pub} />)}
+      </div>
+    </div>
+  </main>
+</Layout>
+
+<style>
+  .narrow { max-width: 76ch; }
+
+  .page-title {
+    font-size: var(--text-4xl);
+    margin-block: var(--space-2) var(--space-8);
+  }
+
+  .pub-list {
+    display: grid;
+    gap: var(--space-4);
+  }
+</style>

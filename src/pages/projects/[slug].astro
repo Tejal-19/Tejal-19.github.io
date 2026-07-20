@@ -1,0 +1,128 @@
+---
+/*
+  A dynamic route: the [slug].astro filename becomes a URL parameter. Since
+  this is a fully static site (no server running at request time),
+  getStaticPaths() must list every value `slug` can take *at build time* —
+  Astro then pre-renders one HTML file per project, e.g. /projects/simbotix/.
+*/
+import { getCollection, render } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import Icon from '../../components/Icon.astro';
+
+export async function getStaticPaths() {
+  const projects = await getCollection('projects');
+  return projects.map((project) => ({
+    params: { slug: project.id },
+    props: { project },
+  }));
+}
+
+const { project } = Astro.props;
+const { title, summary, cover, coverAlt, tags, period, links } = project.data;
+const { Content } = await render(project);
+---
+
+<Layout title={title} description={summary}>
+  <main class="section">
+    <div class="container narrow">
+      <a href="/projects" class="back-link mono">← All projects</a>
+      <p class="annotate">{period}</p>
+      <h1 class="page-title">{title}</h1>
+      <p class="lead">{summary}</p>
+
+      <ul class="tag-list">
+        {tags.map((t) => <li>{t}</li>)}
+      </ul>
+
+      {links?.github && (
+        <a href={links.github} target="_blank" rel="noreferrer" class="repo-link">
+          <Icon name="github" /> View source
+        </a>
+      )}
+
+      <img src={cover} alt={coverAlt} class="cover" />
+
+      <article class="prose">
+        <Content />
+      </article>
+    </div>
+  </main>
+</Layout>
+
+<style>
+  .narrow {
+    max-width: 76ch;
+  }
+
+  .back-link {
+    display: inline-block;
+    color: var(--color-text-dim);
+    margin-bottom: var(--space-6);
+  }
+
+  .back-link:hover { color: var(--color-accent); }
+
+  .page-title {
+    font-size: var(--text-4xl);
+    margin-block: var(--space-2) var(--space-4);
+  }
+
+  .lead {
+    color: var(--color-text-dim);
+    font-size: var(--text-lg);
+    margin-bottom: var(--space-4);
+  }
+
+  .tag-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    list-style: none;
+    margin-bottom: var(--space-6);
+  }
+
+  .tag-list li {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    padding: var(--space-1) var(--space-3);
+    border: 1px solid var(--color-border-strong);
+    border-radius: var(--radius-sm);
+    color: var(--color-text-dim);
+  }
+
+  .repo-link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    color: var(--color-accent);
+    margin-bottom: var(--space-6);
+  }
+
+  .cover {
+    width: 100%;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--color-border);
+    margin-bottom: var(--space-8);
+  }
+
+  .prose :global(h2) {
+    font-size: var(--text-xl);
+    margin-top: var(--space-8);
+    margin-bottom: var(--space-3);
+  }
+
+  .prose :global(p) {
+    color: var(--color-text-dim);
+    margin-bottom: var(--space-3);
+  }
+
+  .prose :global(ul) {
+    color: var(--color-text-dim);
+    padding-left: var(--space-6);
+    margin-bottom: var(--space-3);
+  }
+
+  .prose :global(li) { margin-bottom: var(--space-1); }
+</style>

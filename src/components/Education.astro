@@ -1,0 +1,88 @@
+---
+import { education } from '../data/education';
+---
+
+<section class="section section-alt" id="education">
+  <div class="container">
+    <h2 class="section-title">Education</h2>
+
+    <div class="edu-grid">
+      {education.map((e) => (
+        <div class="edu-card reveal">
+          <h3 class="edu-school">{e.school}</h3>
+          <p class="edu-location mono">{e.location}</p>
+          <p class="edu-degree accent">{e.degree}</p>
+          <p class="edu-period mono">
+            {e.period}{e.gpa && <> &nbsp;·&nbsp; GPA: {e.gpa}</>}
+          </p>
+          <p class="edu-courses-label">Coursework</p>
+          <ul class="edu-courses">
+            {e.courses.map((c) => <li>{c}</li>)}
+          </ul>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .edu-grid {
+    display: grid;
+    gap: var(--space-6);
+  }
+
+  .edu-card {
+    background: var(--color-bg-inset);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: var(--space-6);
+  }
+
+  .edu-school {
+    font-size: var(--text-lg);
+  }
+
+  .edu-location {
+    color: var(--color-text-faint);
+    font-size: var(--text-xs);
+    margin-bottom: var(--space-2);
+  }
+
+  .edu-degree {
+    margin-bottom: var(--space-1);
+  }
+
+  .edu-period {
+    color: var(--color-text-dim);
+    font-size: var(--text-sm);
+    margin-bottom: var(--space-4);
+  }
+
+  .edu-courses-label {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-text-faint);
+    margin-bottom: var(--space-2);
+  }
+
+  .edu-courses {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    list-style: none;
+  }
+
+  .edu-courses li {
+    font-size: var(--text-xs);
+    padding: var(--space-1) var(--space-3);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    color: var(--color-text-dim);
+  }
+
+  @media (min-width: 860px) {
+    .edu-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>

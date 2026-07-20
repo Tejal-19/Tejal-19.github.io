@@ -1,0 +1,51 @@
+---
+/*
+  Layout.astro is Astro's version of a shared page template: every page
+  wraps its content in this component (via <Layout>...</Layout>) instead of
+  repeating the same <head> and <html> boilerplate. The `---` fences above
+  and below mark the "component script" — server-only code/props, never
+  shipped to the browser — separate from the HTML template below it.
+*/
+import '../styles/global.css';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+
+interface Props {
+  title: string;
+  description: string;
+}
+
+const { title, description } = Astro.props;
+const pageTitle = title === 'Tejal Bedmutha' ? title : `${title} — Tejal Bedmutha`;
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="apple-touch-icon" href="/apple-icon.png" />
+    <link rel="manifest" href="/manifest.json" />
+    <meta name="generator" content={Astro.generator} />
+
+    <title>{pageTitle}</title>
+    <meta name="description" content={description} />
+    <meta name="author" content="Tejal Bedmutha" />
+    <link rel="canonical" href={new URL(Astro.url.pathname, Astro.site)} />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={new URL(Astro.url.pathname, Astro.site)} />
+    <meta name="twitter:card" content="summary" />
+  </head>
+  <body>
+    <Nav />
+    <slot />
+    <Footer />
+    <script>
+      import { initReveal } from '../lib/reveal';
+      initReveal();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,175 @@
+@import '@fontsource/inter/400.css';
+@import '@fontsource/inter/500.css';
+@import '@fontsource/inter/600.css';
+@import '@fontsource/space-grotesk/500.css';
+@import '@fontsource/space-grotesk/600.css';
+@import '@fontsource/space-grotesk/700.css';
+@import '@fontsource/jetbrains-mono/400.css';
+@import '@fontsource/jetbrains-mono/500.css';
+
+@import './tokens.css';
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  color-scheme: dark;
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img, svg, video, canvas {
+  display: block;
+  max-width: 100%;
+}
+
+code, .mono {
+  font-family: var(--font-mono);
+}
+
+::selection {
+  background: var(--color-accent-dim);
+  color: var(--color-accent-strong);
+}
+
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: var(--color-bg); }
+::-webkit-scrollbar-thumb { background: var(--color-border-strong); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--color-accent); }
+
+.accent { color: var(--color-accent); }
+
+/*
+  Shared section scaffolding used by About/Timeline/SkillsGrid/Education/
+  Contact/Lab. This lives here (not in each component's scoped <style>)
+  because Astro scopes component styles to that component only — a rule
+  written inside About.astro would not reach the same class name used in
+  Timeline.astro.
+*/
+/*
+  The nav is `position: fixed`, so it doesn't take up layout space — every
+  page's <main> needs this offset or its first section renders underneath
+  the nav bar instead of below it.
+*/
+main {
+  padding-top: var(--nav-height);
+}
+
+/*
+  The nav is fixed and overlaps page content, so a same-page anchor link
+  (href="#experience") or scrollIntoView() would otherwise land the target
+  right under it. scroll-margin-top tells the browser's native scrolling to
+  stop `--nav-height` earlier, independent of any JS.
+*/
+section[id] {
+  scroll-margin-top: var(--nav-height);
+}
+
+.section {
+  padding-block: var(--space-16);
+}
+
+.section-alt {
+  background: var(--color-bg-raised);
+}
+
+.section-title {
+  font-size: var(--text-3xl);
+  margin-bottom: var(--space-8);
+}
+
+/* ---- Layout utility ---- */
+.container {
+  max-width: var(--max-width);
+  margin-inline: auto;
+  padding-inline: var(--space-6);
+}
+
+@media (min-width: 720px) {
+  .container { padding-inline: var(--space-8); }
+}
+
+/*
+  Motif: schematic/occupancy-grid background. A repeating linear-gradient
+  "grid" is the same trick engineering-drawing paper uses — two thin lines,
+  tiled — done in pure CSS so it costs nothing to render or load.
+*/
+.grid-bg {
+  position: relative;
+}
+
+.grid-bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(var(--color-border) 1px, transparent 1px),
+    linear-gradient(90deg, var(--color-border) 1px, transparent 1px);
+  background-size: 40px 40px;
+  opacity: 0.35;
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 20%, black 40%, transparent 90%);
+}
+
+/*
+  Motif: dashed "trajectory" line — used to connect timeline/experience
+  entries, visually reading as a path traveled through time.
+*/
+.trajectory-line {
+  position: absolute;
+  left: 5px;
+  top: 0;
+  bottom: 0;
+  width: 0;
+  border-left: 2px dashed var(--color-border-strong);
+}
+
+/*
+  Motif: annotation call-out, mirroring how CAD/engineering drawings label
+  a feature with a leader line + small caption in a highlight color.
+*/
+.annotate {
+  position: relative;
+  padding-left: var(--space-4);
+  border-left: 2px solid var(--color-annotate);
+  color: var(--color-text-dim);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+/* ---- Scroll reveal (progressive enhancement; see src/lib/reveal.ts) ---- */
+.reveal {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 0.6s var(--ease), transform 0.6s var(--ease);
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}

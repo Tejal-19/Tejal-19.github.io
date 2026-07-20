@@ -1,0 +1,94 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../layouts/Layout.astro';
+import Hero from '../components/Hero.astro';
+import About from '../components/About.astro';
+import PlanningDemo from '../components/PlanningDemo.astro';
+import Timeline from '../components/Timeline.astro';
+import SkillsGrid from '../components/SkillsGrid.astro';
+import Education from '../components/Education.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import PublicationCard from '../components/PublicationCard.astro';
+import Contact from '../components/Contact.astro';
+
+const allProjects = await getCollection('projects');
+const featuredProjects = allProjects
+  .sort((a, b) => a.data.order - b.data.order)
+  .slice(0, 3);
+
+const allPublications = await getCollection('publications');
+const recentPublications = allPublications
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, 2);
+---
+
+<Layout
+  title="Tejal Bedmutha"
+  description="Robotics researcher focused on motion planning, perception, and autonomous underwater vehicles."
+>
+  <main>
+    <Hero />
+    <About />
+    <PlanningDemo />
+    <Timeline />
+
+    <section class="section section-alt" id="projects-preview">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">Projects</h2>
+          <a href="/projects" class="view-all mono">View all →</a>
+        </div>
+        <div class="preview-grid">
+          {featuredProjects.map((project) => <ProjectCard project={project} />)}
+        </div>
+      </div>
+    </section>
+
+    <SkillsGrid />
+    <Education />
+
+    <section class="section" id="publications-preview">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">Publications</h2>
+          <a href="/publications" class="view-all mono">View all →</a>
+        </div>
+        <div class="pub-preview-list">
+          {recentPublications.map((pub) => <PublicationCard publication={pub} />)}
+        </div>
+      </div>
+    </section>
+
+    <Contact />
+  </main>
+</Layout>
+
+<style>
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: var(--space-8);
+  }
+
+  .section-header .section-title { margin-bottom: 0; }
+
+  .view-all {
+    font-size: var(--text-sm);
+    color: var(--color-accent);
+  }
+
+  .preview-grid {
+    display: grid;
+    gap: var(--space-6);
+  }
+
+  .pub-preview-list {
+    display: grid;
+    gap: var(--space-4);
+  }
+
+  @media (min-width: 720px) {
+    .preview-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+</style>

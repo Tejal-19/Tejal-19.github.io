@@ -1,0 +1,181 @@
+---
+/*
+  Astro components can only run their <script> once per page — it's bundled
+  and deduped automatically, so this works even though Nav appears on every
+  page via Layout.astro without re-downloading duplicate JS.
+*/
+const links = [
+  { href: '/#about', label: 'About' },
+  { href: '/publications', label: 'Publications' },
+  { href: '/#experience', label: 'Experience' },
+  { href: '/projects', label: 'Projects' },
+  { href: '/#skills', label: 'Skills' },
+  { href: '/#education', label: 'Education' },
+  { href: '/#contact', label: 'Contact' },
+];
+---
+
+<nav class="nav" id="nav">
+  <div class="container nav-inner">
+    <a href="/" class="nav-logo">TB<span class="accent">.</span></a>
+    <ul class="nav-links">
+      {links.map((l) => (
+        <li><a href={l.href}>{l.label}</a></li>
+      ))}
+      <li><a href="/resume/Tejal_Bedmutha_Resume.pdf" target="_blank" class="nav-resume">Resume</a></li>
+    </ul>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <div class="nav-mobile" id="navMobile">
+    <ul>
+      {links.map((l) => (
+        <li><a href={l.href}>{l.label}</a></li>
+      ))}
+      <li><a href="/resume/Tejal_Bedmutha_Resume.pdf" target="_blank">Resume ↗</a></li>
+    </ul>
+  </div>
+</nav>
+
+<style>
+  .nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    height: var(--nav-height);
+    transition: background 0.25s var(--ease), border-color 0.25s var(--ease);
+    border-bottom: 1px solid transparent;
+  }
+
+  .nav.is-scrolled {
+    background: rgba(11, 13, 16, 0.85);
+    backdrop-filter: blur(10px);
+    border-bottom-color: var(--color-border);
+  }
+
+  .nav-inner {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .nav-logo {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: var(--text-xl);
+  }
+
+  .nav-links {
+    display: none;
+    align-items: center;
+    gap: var(--space-6);
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+  }
+
+  .nav-links a {
+    color: var(--color-text-dim);
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover {
+    color: var(--color-accent);
+  }
+
+  .nav-resume {
+    color: var(--color-bg) !important;
+    background: var(--color-accent);
+    padding: var(--space-2) var(--space-4);
+    border-radius: var(--radius-sm);
+  }
+
+  .nav-resume:hover {
+    color: var(--color-bg) !important;
+    background: var(--color-accent-strong);
+  }
+
+  .nav-toggle {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    width: 32px;
+    height: 32px;
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+
+  .nav-toggle span {
+    display: block;
+    height: 2px;
+    background: var(--color-text);
+    border-radius: 1px;
+    transition: transform 0.25s var(--ease), opacity 0.25s var(--ease);
+  }
+
+  .nav-toggle.is-open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .nav-toggle.is-open span:nth-child(2) { opacity: 0; }
+  .nav-toggle.is-open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+  .nav-mobile {
+    position: fixed;
+    top: var(--nav-height);
+    left: 0; right: 0;
+    background: var(--color-bg-raised);
+    border-bottom: 1px solid var(--color-border);
+    transform: translateY(-8px);
+    opacity: 0;
+    pointer-events: none;
+    transition: transform 0.25s var(--ease), opacity 0.25s var(--ease);
+  }
+
+  .nav-mobile.is-open {
+    transform: translateY(0);
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .nav-mobile ul {
+    list-style: none;
+    padding: var(--space-4) var(--space-6);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    font-family: var(--font-mono);
+  }
+
+  .nav-mobile a {
+    color: var(--color-text-dim);
+  }
+
+  @media (min-width: 860px) {
+    .nav-links { display: flex; }
+    .nav-toggle, .nav-mobile { display: none; }
+  }
+</style>
+
+<script>
+  const nav = document.getElementById('nav');
+  const toggle = document.getElementById('navToggle');
+  const mobile = document.getElementById('navMobile');
+
+  window.addEventListener('scroll', () => {
+    nav?.classList.toggle('is-scrolled', window.scrollY > 24);
+  });
+
+  toggle?.addEventListener('click', () => {
+    const isOpen = mobile?.classList.toggle('is-open');
+    toggle.classList.toggle('is-open', !!isOpen);
+    toggle.setAttribute('aria-expanded', String(!!isOpen));
+  });
+
+  mobile?.querySelectorAll('a').forEach((a) => {
+    a.addEventListener('click', () => {
+      mobile.classList.remove('is-open');
+      toggle?.classList.remove('is-open');
+    });
+  });
+</script>

@@ -8,6 +8,7 @@ import { experience } from '../data/experience';
 
     <div class="timeline">
       <div class="trajectory-line" aria-hidden="true"></div>
+      <div class="trajectory-progress" aria-hidden="true"></div>
 
       {experience.map((e) => (
         <article class="timeline-entry reveal">
@@ -35,8 +36,24 @@ import { experience } from '../data/experience';
 
 <style>
   .timeline {
+    --tl-progress: 0;
     position: relative;
     padding-left: var(--space-8);
+  }
+
+  /*
+    Overlaid on top of the dim static .trajectory-line (global.css): this
+    accent-colored line's height tracks --tl-progress, set continuously from
+    scroll position in scrollFrames.ts — it "draws" down the page as you
+    scroll rather than appearing all at once.
+  */
+  .trajectory-progress {
+    position: absolute;
+    left: 5px;
+    top: 0;
+    width: 0;
+    height: calc(var(--tl-progress) * 100%);
+    border-left: 2px dashed var(--color-accent);
   }
 
   .timeline-entry {
@@ -47,6 +64,8 @@ import { experience } from '../data/experience';
   .timeline-entry:last-child { padding-bottom: 0; }
 
   .timeline-node {
+    /* pops in as the entry's own .reveal progress advances */
+    transform: scale(var(--p, 1));
     position: absolute;
     left: calc(-1 * var(--space-8) + 1px);
     top: 6px;

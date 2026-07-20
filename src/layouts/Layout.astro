@@ -44,8 +44,10 @@ const pageTitle = title === 'Tejal Bedmutha' ? title : `${title} — Tejal Bedmu
     <slot />
     <Footer />
     <script>
-      import { initReveal } from '../lib/reveal';
-      initReveal();
+      import { initSmoothScroll } from '../lib/smoothScroll';
+      import { initScrollFrames } from '../lib/scrollFrames';
+      initSmoothScroll();
+      initScrollFrames();
     </script>
   </body>
 </html>

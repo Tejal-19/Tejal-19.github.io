@@ -1,0 +1,52 @@
+name: Deploy to GitHub Pages
+
+# CI/CD, in short: every push to master triggers this pipeline instead of
+# you running `npm run build` and copying files up by hand. It builds the
+# site fresh in a clean environment (catching "works on my machine" issues)
+# and only publishes if that build succeeds.
+#
+# `build` runs on both PRs and pushes to master — on a PR that's just a
+# status check (does it still build?), it never touches the live site.
+# `deploy` is restricted to pushes on master, so opening/updating a PR can
+# never publish unreviewed content to the real URL.
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+  workflow_dispatch: # lets you trigger a deploy manually from the Actions tab
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Pages deploys should never run two at once — if a second push lands
+# mid-deploy, let the first finish rather than racing it.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install, build, and upload the site
+        uses: withastro/action@v3
+        with:
+          node-version: 22
+
+  deploy:
+    needs: build
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

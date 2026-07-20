@@ -1,0 +1,132 @@
+---
+import { experience } from '../data/experience';
+---
+
+<section class="section section-alt" id="experience">
+  <div class="container">
+    <h2 class="section-title">Experience</h2>
+
+    <div class="timeline">
+      <div class="trajectory-line" aria-hidden="true"></div>
+
+      {experience.map((e) => (
+        <article class="timeline-entry reveal">
+          <div class="timeline-node"></div>
+          <div class="timeline-card">
+            <header class="timeline-header">
+              <div>
+                <h3 class="timeline-company">{e.company}</h3>
+                <p class="timeline-role">{e.role}</p>
+              </div>
+              <p class="timeline-period mono">{e.period} · {e.location}</p>
+            </header>
+            <ul class="timeline-bullets">
+              {e.bullets.map((b) => <li>{b}</li>)}
+            </ul>
+            <ul class="tag-list">
+              {e.tags.map((t) => <li>{t}</li>)}
+            </ul>
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .timeline {
+    position: relative;
+    padding-left: var(--space-8);
+  }
+
+  .timeline-entry {
+    position: relative;
+    padding-bottom: var(--space-12);
+  }
+
+  .timeline-entry:last-child { padding-bottom: 0; }
+
+  .timeline-node {
+    position: absolute;
+    left: calc(-1 * var(--space-8) + 1px);
+    top: 6px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--color-bg-raised);
+    border: 2px solid var(--color-accent);
+  }
+
+  .timeline-card {
+    background: var(--color-bg-inset);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: var(--space-6);
+  }
+
+  .timeline-header {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    margin-bottom: var(--space-4);
+  }
+
+  .timeline-company {
+    font-size: var(--text-lg);
+  }
+
+  .timeline-role {
+    color: var(--color-accent);
+    font-size: var(--text-sm);
+  }
+
+  .timeline-period {
+    color: var(--color-text-faint);
+    font-size: var(--text-xs);
+  }
+
+  .timeline-bullets {
+    list-style: none;
+    color: var(--color-text-dim);
+    font-size: var(--text-sm);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    margin-bottom: var(--space-4);
+  }
+
+  .timeline-bullets li {
+    padding-left: var(--space-4);
+    position: relative;
+  }
+
+  .timeline-bullets li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.6em;
+    width: 6px;
+    height: 1px;
+    background: var(--color-accent);
+  }
+
+  .tag-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    list-style: none;
+  }
+
+  .tag-list li {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    padding: 2px var(--space-2);
+    border: 1px solid var(--color-border-strong);
+    border-radius: var(--radius-sm);
+    color: var(--color-text-faint);
+  }
+
+  @media (min-width: 640px) {
+    .timeline-header { flex-direction: row; justify-content: space-between; align-items: baseline; }
+  }
+</style>

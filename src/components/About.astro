@@ -1,0 +1,108 @@
+---
+const highlights = [
+  { number: '3+', label: 'Years Exp.' },
+  { number: '5', label: 'Papers' },
+  { number: '6+', label: 'Projects' },
+  { number: 'MS', label: 'Columbia' },
+];
+
+const focusAreas = [
+  'Motion Planning', 'ROS / ROS2', 'C++', 'Python', 'Computer Vision',
+  'SLAM', 'Autonomous Vehicles', 'Control Systems', 'Sensor Fusion', 'Machine Learning',
+];
+---
+
+<section class="section" id="about">
+  <div class="container">
+    <h2 class="section-title">About <span class="accent">Me</span></h2>
+
+    <div class="about-grid">
+      <div class="about-copy reveal">
+        <p>
+          My passion lies in robotics, with a specific focus on motion planning, perception,
+          and robot learning — deciphering the algorithms that navigate, plan, and map the world
+          around them, and unraveling the patterns that propel the future of robotic exploration.
+        </p>
+        <p>
+          I'm looking for roles that combine Robotics, Control Systems, and Motion Planning —
+          positions that offer professional growth, interesting research problems, and
+          real-world impact.
+        </p>
+      </div>
+
+      <dl class="about-stats reveal">
+        {highlights.map((h) => (
+          <div class="stat">
+            <dt class="stat-number accent">{h.number}</dt>
+            <dd class="stat-label">{h.label}</dd>
+          </div>
+        ))}
+      </dl>
+    </div>
+
+    <ul class="focus-tags reveal">
+      {focusAreas.map((f) => <li>{f}</li>)}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .about-grid {
+    display: grid;
+    gap: var(--space-8);
+    margin-bottom: var(--space-8);
+  }
+
+  .about-copy p {
+    color: var(--color-text-dim);
+    max-width: 62ch;
+  }
+
+  .about-copy p + p { margin-top: var(--space-4); }
+
+  .about-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-4);
+  }
+
+  .stat {
+    padding: var(--space-4);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    text-align: center;
+  }
+
+  .stat-number {
+    display: block;
+    font-family: var(--font-display);
+    font-size: var(--text-2xl);
+    font-weight: 700;
+  }
+
+  .stat-label {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-text-faint);
+  }
+
+  .focus-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    list-style: none;
+  }
+
+  .focus-tags li {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    padding: var(--space-2) var(--space-3);
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
+    color: var(--color-text-dim);
+  }
+
+  @media (min-width: 860px) {
+    .about-grid { grid-template-columns: 1.6fr 1fr; }
+  }
+</style>

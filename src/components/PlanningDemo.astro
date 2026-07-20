@@ -1,0 +1,135 @@
+---
+/*
+  This section is the "interactive centerpiece": a real A* path planner
+  running client-side (see src/lib/pathPlanning/astar.ts + demo.ts). It costs
+  nothing extra to host — it's just JavaScript executing in the visitor's
+  browser, same as any other client script, not a server-backed feature.
+*/
+---
+
+<section class="section" id="lab">
+  <div class="container">
+    <h2 class="section-title">The <span class="accent">Lab</span></h2>
+    <p class="lab-intro">
+      A live A* search over an 8-connected occupancy grid — the same class of
+      problem that shows up in mobile-robot and UAV path planning. Paint walls,
+      move the start/goal, and run the search to watch the frontier expand and
+      the shortest path get traced.
+    </p>
+
+    <div class="lab-demo" id="planningDemo">
+      <div class="lab-toolbar">
+        <div class="lab-modes">
+          <button type="button" data-mode="wall" class="is-active">Draw walls</button>
+          <button type="button" data-mode="erase">Erase</button>
+          <button type="button" data-mode="start">Move start</button>
+          <button type="button" data-mode="goal">Move goal</button>
+        </div>
+        <div class="lab-actions">
+          <button type="button" data-action="random">Randomize</button>
+          <button type="button" data-action="clear">Clear</button>
+          <button type="button" data-action="run" class="btn-run">Run A*</button>
+        </div>
+      </div>
+      <canvas></canvas>
+      <p class="lab-status mono" data-status>ready</p>
+      <div class="lab-legend">
+        <span><i style="background:var(--color-accent)"></i> start</span>
+        <span><i style="background:var(--color-annotate)"></i> goal</span>
+        <span><i style="background:rgba(79,209,224,0.4)"></i> open set</span>
+        <span><i style="background:rgba(94,104,120,0.5)"></i> visited</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .lab-intro {
+    color: var(--color-text-dim);
+    max-width: 68ch;
+    margin-bottom: var(--space-8);
+  }
+
+  .lab-demo {
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: var(--space-4);
+    background: var(--color-bg-inset);
+  }
+
+  .lab-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: var(--space-3);
+    margin-bottom: var(--space-4);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+  }
+
+  .lab-modes, .lab-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+
+  .lab-demo button {
+    padding: var(--space-2) var(--space-3);
+    border: 1px solid var(--color-border-strong);
+    border-radius: var(--radius-sm);
+    color: var(--color-text-dim);
+    background: transparent;
+    cursor: pointer;
+    transition: border-color 0.2s, color 0.2s;
+  }
+
+  .lab-demo button:hover { border-color: var(--color-accent); color: var(--color-text); }
+  .lab-demo button.is-active { border-color: var(--color-accent); color: var(--color-accent); }
+
+  .btn-run {
+    background: var(--color-accent);
+    color: var(--color-bg) !important;
+    border-color: var(--color-accent) !important;
+  }
+
+  .lab-demo canvas {
+    width: 100%;
+    touch-action: none;
+    border-radius: var(--radius-sm);
+    cursor: crosshair;
+  }
+
+  .lab-status {
+    margin-top: var(--space-3);
+    color: var(--color-text-faint);
+  }
+
+  .lab-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+    margin-top: var(--space-3);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-text-faint);
+  }
+
+  .lab-legend span {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+  }
+
+  .lab-legend i {
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+  }
+</style>
+
+<script>
+  import { initPlanningDemo } from '../lib/pathPlanning/demo';
+
+  const root = document.getElementById('planningDemo');
+  if (root) initPlanningDemo(root);
+</script>

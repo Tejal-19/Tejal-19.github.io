@@ -1,0 +1,127 @@
+---
+import { render } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  publication: CollectionEntry<'publications'>;
+}
+
+const { publication } = Astro.props;
+const { title, authors, venue, status, date, link } = publication.data;
+const { Content } = await render(publication);
+
+const statusLabel: Record<typeof status, string> = {
+  submitted: 'Submitted',
+  'in-prep': 'In Preparation',
+  published: 'Published',
+  thesis: 'Thesis',
+};
+
+const dateLabel = date.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+---
+
+<!--
+  <details>/<summary> is a native HTML "disclosure" widget — click to
+  expand/collapse with zero JavaScript. Using the platform instead of
+  hand-rolling click handlers for something this simple.
+-->
+<details class="pub-card reveal">
+  <summary>
+    <div class="pub-meta">
+      <span class:list={['pub-status', `status-${status}`]}>{statusLabel[status]}</span>
+      <span class="pub-date mono">{dateLabel}</span>
+    </div>
+    <h3 class="pub-title">{title}</h3>
+    <p class="pub-authors">{authors.join(', ')}</p>
+    <p class="pub-venue">{venue}</p>
+  </summary>
+  <div class="pub-abstract">
+    <Content />
+    {link && <a href={link} target="_blank" rel="noreferrer" class="pub-link">View paper →</a>}
+  </div>
+</details>
+
+<style>
+  .pub-card {
+    background: var(--color-bg-inset);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: var(--space-6);
+  }
+
+  .pub-card summary {
+    cursor: pointer;
+    list-style: none;
+  }
+
+  .pub-card summary::-webkit-details-marker { display: none; }
+
+  .pub-card summary::after {
+    content: '+ expand abstract';
+    display: block;
+    margin-top: var(--space-3);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-accent);
+  }
+
+  .pub-card[open] summary::after {
+    content: '– collapse';
+  }
+
+  .pub-meta {
+    display: flex;
+    gap: var(--space-3);
+    align-items: center;
+    margin-bottom: var(--space-2);
+  }
+
+  .pub-status {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    padding: 2px var(--space-2);
+    border-radius: var(--radius-sm);
+  }
+
+  .status-submitted { background: var(--color-accent-dim); color: var(--color-accent); }
+  .status-in-prep { background: var(--color-annotate-dim); color: var(--color-annotate); }
+  .status-published { background: rgba(120, 200, 130, 0.12); color: #78c882; }
+  .status-thesis { background: var(--color-border); color: var(--color-text-dim); }
+
+  .pub-date { color: var(--color-text-faint); font-size: var(--text-xs); }
+
+  .pub-title {
+    font-size: var(--text-lg);
+    margin-bottom: var(--space-1);
+  }
+
+  .pub-authors {
+    color: var(--color-text-dim);
+    font-size: var(--text-sm);
+  }
+
+  .pub-venue {
+    color: var(--color-text-faint);
+    font-size: var(--text-sm);
+    font-style: italic;
+  }
+
+  .pub-abstract {
+    margin-top: var(--space-4);
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--color-border);
+    color: var(--color-text-dim);
+    font-size: var(--text-sm);
+  }
+
+  .pub-abstract :global(p + p) { margin-top: var(--space-3); }
+
+  .pub-link {
+    display: inline-block;
+    margin-top: var(--space-3);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-accent);
+  }
+</style>

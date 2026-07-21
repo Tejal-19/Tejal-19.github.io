@@ -27,7 +27,7 @@ import Icon from './Icon.astro';
     </div>
 
     <div class="hero-portrait" data-parallax="-0.12">
-      <img src="/images/profile_pic_2.jpeg" alt="Tejal Bedmutha" width="360" height="360" />
+      <img src="/images/profile.jpg" alt="Tejal Bedmutha" width="666" height="1000" />
       <div class="hero-portrait-frame"></div>
     </div>
   </div>
@@ -125,8 +125,16 @@ import Icon from './Icon.astro';
 
   .hero-portrait img {
     width: 100%;
+    /*
+      The <img> has HTML width/height attributes (for CLS prevention on
+      first paint) that don't match a 1:1 ratio — without `height: auto`
+      here, that attribute-derived height wins and aspect-ratio has no
+      auto dimension left to compute, so the box silently stays non-square.
+    */
+    height: auto;
     aspect-ratio: 1;
     object-fit: cover;
+    object-position: 50% 18%;
     border-radius: var(--radius-lg);
     filter: grayscale(0.15);
   }

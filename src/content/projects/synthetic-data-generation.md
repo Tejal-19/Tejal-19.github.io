@@ -2,7 +2,7 @@
 title: Physics-Aware Synthetic Data Generation for Robot Learning
 summary: Simulated messy and neat tabletop scenes to train a robot to tidy a cluttered table into a neatly arranged one.
 cover: /images/projects/synthetic-data-generation.jpg
-coverAlt: Simulated tabletop scenes for robot learning
+coverAlt: Blender scene of a cluttered tabletop used to generate synthetic training data
 tags: [Synthetic Data Generation, Robot Learning, Simulation]
 period: "2026"
 featured: true

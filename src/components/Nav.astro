@@ -8,6 +8,7 @@ const links = [
   { href: '/#about', label: 'About' },
   { href: '/publications', label: 'Publications' },
   { href: '/#experience', label: 'Experience' },
+  { href: '/#hackathons', label: 'Hackathons' },
   { href: '/projects', label: 'Projects' },
   { href: '/#skills', label: 'Skills' },
   { href: '/#education', label: 'Education' },
@@ -70,7 +71,9 @@ const links = [
   .nav-links {
     display: none;
     align-items: center;
-    gap: var(--space-6);
+    /* tighter than --space-6: with 8 links + Resume, the wider gap risked
+       pushing Resume past the viewport edge before the mobile breakpoint */
+    gap: var(--space-4);
     font-family: var(--font-mono);
     font-size: var(--text-sm);
   }
@@ -151,7 +154,11 @@ const links = [
     color: var(--color-text-dim);
   }
 
-  @media (min-width: 860px) {
+  /*
+    Raised from 860px: at 8 nav links + Resume, 860px wasn't wide enough to
+    fit them without the Resume button overflowing past the viewport edge.
+  */
+  @media (min-width: 1040px) {
     .nav-links { display: flex; }
     .nav-toggle, .nav-mobile { display: none; }
   }

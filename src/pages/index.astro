@@ -11,9 +11,7 @@ import PublicationCard from '../components/PublicationCard.astro';
 import Contact from '../components/Contact.astro';
 
 const allProjects = await getCollection('projects');
-const featuredProjects = allProjects
-  .sort((a, b) => a.data.order - b.data.order)
-  .slice(0, 3);
+const sortedProjects = allProjects.sort((a, b) => a.data.order - b.data.order);
 
 const allPublications = await getCollection('publications');
 const recentPublications = allPublications
@@ -36,8 +34,21 @@ const recentPublications = allPublications
           <h2 class="section-title">Projects</h2>
           <a href="/projects" class="view-all mono">View all →</a>
         </div>
-        <div class="preview-grid">
-          {featuredProjects.map((project) => <ProjectCard project={project} />)}
+      </div>
+      <!--
+        A horizontal scroller (not a static 3-up grid) so the cut-off card
+        peeking at the edge signals "there's more here" — a plain grid of
+        3 reads as "this is everything."
+      -->
+      <div class="projects-scroller-wrap">
+        <div class="projects-scroller">
+          {sortedProjects.map((project) => (
+            <div class="scroller-item"><ProjectCard project={project} /></div>
+          ))}
+          <a href="/projects" class="scroller-item see-all-tile">
+            <span>See all {sortedProjects.length} projects</span>
+            <span class="mono">→</span>
+          </a>
         </div>
       </div>
     </section>
@@ -76,17 +87,86 @@ const recentPublications = allPublications
     color: var(--color-accent);
   }
 
-  .preview-grid {
-    display: grid;
-    gap: var(--space-6);
-  }
-
   .pub-preview-list {
     display: grid;
     gap: var(--space-4);
   }
 
+  /* Full-bleed: the scroller spans the viewport so the peeking card sits
+     right at the browser edge instead of stopping inside the container. */
+  .projects-scroller-wrap {
+    position: relative;
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
+  }
+
+  .projects-scroller-wrap::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: var(--space-4);
+    width: 64px;
+    background: linear-gradient(to right, transparent, var(--color-bg-raised));
+    pointer-events: none;
+  }
+
+  .projects-scroller {
+    display: flex;
+    gap: var(--space-6);
+    overflow-x: auto;
+    scroll-snap-type: x proximity;
+    scroll-padding-left: var(--space-6);
+    padding-inline: var(--space-6);
+    padding-bottom: var(--space-4);
+  }
+
+  .scroller-item {
+    flex: 0 0 auto;
+    /*
+      Deliberately vw-scaled (not a fixed px width): a fixed width risks
+      landing exactly N cards per viewport with zero pixels of the next one
+      showing — which is exactly the "looks like that's everything" problem
+      this scroller exists to avoid. Scaling with viewport width keeps a
+      partial card in view at essentially any window size.
+    */
+    width: clamp(260px, 27vw, 340px);
+    scroll-snap-align: start;
+  }
+
+  @media (max-width: 719px) {
+    .scroller-item { width: 82vw; }
+  }
+
+  .see-all-tile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-3);
+    min-height: 100%;
+    border: 1px dashed var(--color-border-strong);
+    border-radius: var(--radius-md);
+    color: var(--color-text-dim);
+    text-align: center;
+    padding: var(--space-6);
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    transition: border-color 0.2s, color 0.2s;
+  }
+
+  .see-all-tile:hover {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+  }
+
   @media (min-width: 720px) {
-    .preview-grid { grid-template-columns: repeat(3, 1fr); }
+    .projects-scroller {
+      scroll-padding-left: var(--space-8);
+      /* matches .container's actual left inset at this width: the same
+         max() a centered max-width container uses (margin beyond
+         max-width, or just the padding below it) */
+      padding-inline: max(var(--space-8), calc((100vw - var(--max-width)) / 2 + var(--space-8)));
+    }
   }
 </style>

@@ -12,7 +12,7 @@ export const hackathons: Hackathon[] = [
     event: 'Columbia × AWS Bedrock Hackathon',
     result: 'Winner',
     date: 'Nov 2025',
-    link: 'https://mycfo-ai.ritvik-sharma.com',
+    link: 'https://github.com/Tejal-19/cfo-vision-buddy',
     bullets: [
       'Modeled a serverless end-to-end data lifecycle platform on AWS Bedrock, Lambda, and API Gateway supporting enterprise data acquisition, transformation, and governed access.',
       'Developed event-driven microservices orchestrating LLM agents for financial insights, applying data quality frameworks and structured validation to reduce hallucinations across analytical pipelines.',
